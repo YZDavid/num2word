@@ -1,9 +1,9 @@
 spell = {1:'one', 2:'two', 3:'three', 4:'four', 5:'five', 6:'six', 7:'seven', 8:'eight', 9:'nine',
-             10:'ten', 11:'eleven', 12:'twelve', 13:'thirteen', 14:'fourteen', 15:'fifteen', 16:'sixteen',
-             17:'seventeen', 18:'eighteen', 19:'nineteen', 20:'twenty', 30:'thirty', 40:'forty', 50:'fifty',
-             60:'sixty', 70:'seventy', 80:'eighty', 90:'ninety', '00':'hundred', '000':'thousand', '000000':'million'}
+        10:'ten', 11:'eleven', 12:'twelve', 13:'thirteen', 14:'fourteen', 15:'fifteen', 16:'sixteen',
+        17:'seventeen', 18:'eighteen', 19:'nineteen', 20:'twenty', 30:'thirty', 40:'forty', 50:'fifty',
+        60:'sixty', 70:'seventy', 80:'eighty', 90:'ninety', '00':'hundred', '000':'thousand', '000000':'million'}
 
-prefixes = {2:'thousand', 3:'million', 4:'billion', 5:'trillion', 6:'quadrillion', 7:'quintillion', 8:'sextillion', 9:'septillion',
+suffixes = {2:'thousand', 3:'million', 4:'billion', 5:'trillion', 6:'quadrillion', 7:'quintillion', 8:'sextillion', 9:'septillion',
             10:'octillion', 11:'nonillion', 12:'decillion',13:'undecillion', 14:'duodecillion', 15:'tredecillion', 16:'quattuordecillion',
             17:'quindecillion', 18:'sexdecillion', 19:'septendecillion', 20:'octodecillion', 21:'novemdecillion', 22:'vigintillion',
             23:'unvigintillion', 24:'duovigintillion', 25:'tresvigintillion', 26:'quattuorvigintillion', 27:'quinvigintillion',
@@ -12,17 +12,21 @@ prefixes = {2:'thousand', 3:'million', 4:'billion', 5:'trillion', 6:'quadrillion
             40:'octotrigintillion', 41:'noventrigintillion', 42:'quadragintillion'}
 
 def num2word(num):
-    num_prefix = num_breakdown(num)
-    prefix_len = len(num_prefix)
+    num_arr = num_breakdown(num)
+    suffix_len = len(num_arr)
     spelled = []
-    if prefix_len > 42:
+    if suffix_len > 42:
         return 'really large number'
+    if num == 0:
+        return 'zero'
+    if num < 0 or type(num) != int:
+        return 'please enter a non-negative integer'
 
-    for i in range(prefix_len):
-        p_index = prefix_len - i
-        number = num_prefix[i]
+    for i in range(suffix_len):
+        p_index = suffix_len - i
+        number = num_arr[i]
         if p_index > 1 and number != 0:
-            spelled.append(assembler(sub_breakdown(number)) + ' ' + prefixes[p_index])
+            spelled.append(assembler(sub_breakdown(number)) + ' ' + suffixes[p_index])
         elif number != 0:
             spelled.append(assembler(sub_breakdown(number)))
         
