@@ -3,30 +3,36 @@ spell = {1:'one', 2:'two', 3:'three', 4:'four', 5:'five', 6:'six', 7:'seven', 8:
              17:'seventeen', 18:'eighteen', 19:'nineteen', 20:'twenty', 30:'thirty', 40:'forty', 50:'fifty',
              60:'sixty', 70:'seventy', 80:'eighty', 90:'ninety', '00':'hundred', '000':'thousand', '000000':'million'}
 
-def num2word(num):
-    if num >= 10000000:
-        return 'really large number'
-    
-    mil, tho, hun = num_breakdown(num)
-    output = []
-    if mil != 0 and ((tho == 0) ^ (hun == 0)):
-        output.append(spell[mil] + ' million and')
-    elif mil != 0:
-        output.append(spell[mil] + ' million,')
-    if tho != 0:
-        if tho in spell:
-            output.append(spell[tho] + ' thousand,')
-        else:
-            output.append(assembler(sub_breakdown(tho)) + ' thousand,')
-    if hun != 0:
-        if hun in spell:
-            output.append(spell[hun])
-        else:
-            output.append(assembler(sub_breakdown(hun)))
+prefixes = {2:'thousand', 3:'million', 4:'billion', 5:'trillion', 6:'quadrillion', 7:'quintillion', 8:'sextillion', 9:'septillion',
+            10:'octillion', 11:'nonillion', 12:'decillion',13:'undecillion', 14:'duodecillion', 15:'tredecillion', 16:'quattuordecillion',
+            17:'quindecillion', 18:'sexdecillion', 19:'septendecillion', 20:'octodecillion', 21:'novemdecillion', 22:'vigintillion',
+            23:'unvigintillion', 24:'duovigintillion', 25:'tresvigintillion', 26:'quattuorvigintillion', 27:'quinvigintillion',
+            28:'sesvigintillion', 29:'septemvigintillion', 30:'octovigintillion', 31:'novemvigintillion', 32:'trigintillion', 33:'untrigintillion',
+            34:'duotrigintillion', 35:'trestrigintillion', 36:'quattuotrigintillion', 37:'quintrigintillion', 38:'sestrigintillion', 39:'septentrigintillion',
+            40:'octotrigintillion', 41:'noventrigintillion', 42:'quadragintillion'}
 
-    output = ' '.join(output)
-    if output[-1] == ',':
-        output = output[:-1]
+def num2word(num):
+    num_prefix = num_breakdown(num)
+    prefix_len = len(num_prefix)
+    spelled = []
+    if prefix_len > 42:
+        return 'really large number'
+
+    for i in range(prefix_len):
+        p_index = prefix_len - i
+        number = num_prefix[i]
+        if p_index > 1 and number != 0:
+            spelled.append(assembler(sub_breakdown(number)) + ' ' + prefixes[p_index])
+        elif number != 0:
+            spelled.append(assembler(sub_breakdown(number)))
+        
+    if len(spelled) == 1:
+        return spelled[0]
+    output = ', '.join(spelled[:-1])
+    if 'and' in spelled[-1]:
+        output += ', ' + spelled[-1]
+    else:
+        output += ' and ' + spelled[-1]
     return output
      
 def assembler(tup):
@@ -56,11 +62,11 @@ def sub_breakdown(num):
     
 
 def num_breakdown(num):
-    mil = num // 1000000
-    thousand = (num - (mil * 1000000)) // 1000
-    hundred = num % 1000
-    return (mil, thousand, hundred)
+    '''breaks down numbers into an array of three digits at a time'''
+    num_array = []
+    num_str = str(num)
+    for i in range(len(num_str), 0, -3):
+        start = max(i - 3, 0)
+        num_array.insert(0, int(num_str[start:i]))
+    return num_array
 
-print(num2word(25406))
-print(num2word(123))
-print(num2word(9050327))
