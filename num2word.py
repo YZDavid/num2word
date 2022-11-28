@@ -12,15 +12,15 @@ suffixes = {2:'thousand', 3:'million', 4:'billion', 5:'trillion', 6:'quadrillion
             40:'octotrigintillion', 41:'noventrigintillion', 42:'quadragintillion'}
 
 def num2word(num):
+    if num == 0:
+        return 'zero'
+    if num < 0 or type(num) != int:
+        return 'please enter a non-negative integer'
     num_arr = num_breakdown(num)
     suffix_len = len(num_arr)
     spelled = []
     if suffix_len > 42:
         return 'really large number'
-    if num == 0:
-        return 'zero'
-    if num < 0 or type(num) != int:
-        return 'please enter a non-negative integer'
 
     for i in range(suffix_len):
         p_index = suffix_len - i
