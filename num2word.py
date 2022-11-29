@@ -1,7 +1,7 @@
 spell = {1:'one', 2:'two', 3:'three', 4:'four', 5:'five', 6:'six', 7:'seven', 8:'eight', 9:'nine',
         10:'ten', 11:'eleven', 12:'twelve', 13:'thirteen', 14:'fourteen', 15:'fifteen', 16:'sixteen',
         17:'seventeen', 18:'eighteen', 19:'nineteen', 20:'twenty', 30:'thirty', 40:'forty', 50:'fifty',
-        60:'sixty', 70:'seventy', 80:'eighty', 90:'ninety', '00':'hundred', '000':'thousand', '000000':'million'}
+        60:'sixty', 70:'seventy', 80:'eighty', 90:'ninety'}
 
 suffixes = {2:'thousand', 3:'million', 4:'billion', 5:'trillion', 6:'quadrillion', 7:'quintillion', 8:'sextillion', 9:'septillion',
             10:'octillion', 11:'nonillion', 12:'decillion',13:'undecillion', 14:'duodecillion', 15:'tredecillion', 16:'quattuordecillion',
@@ -14,7 +14,7 @@ suffixes = {2:'thousand', 3:'million', 4:'billion', 5:'trillion', 6:'quadrillion
 def num2word(num):
     if num == 0:
         return 'zero'
-    if num < 0 or type(num) != int:
+    if type(num) != int or num < 0:
         return 'please enter a non-negative integer'
     num_arr = num_breakdown(num)
     suffix_len = len(num_arr)
